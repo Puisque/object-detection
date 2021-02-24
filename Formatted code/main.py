@@ -73,8 +73,10 @@ for i, (key, value) in enumerate(movie_raw_data.items()):
     video_path_1,elapsed_time_1  = detect_objects(detector,video_data = video_data,fileName = f_name,logProgress=logProgress)
     #Process the detection results
     output_Collection_temp = Global.output_Collection.copy()
+    #====================Aisling, here is your part====================
     per_sec_object_info = choose_obj(output_Collection_temp)
     grouped_per_sec_object_info = final_result(per_sec_object_info)
+    #============================================================
     v_index = str(i)
     dict_to_schema(grouped_per_sec_object_info,value,url,v_index)
 
