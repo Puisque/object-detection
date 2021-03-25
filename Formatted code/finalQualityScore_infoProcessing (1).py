@@ -428,7 +428,7 @@ def dict_to_schema (score_arr,video_info,url,v_index):
           #video_info['Video Info']['id'],
           #url,
           video_info['Video Info']['runtime'],
-          video_info['Video Info']['genres']['name'],
+          video_info['Video Info']['genres'],#need to be edited maybe manually !!!!
           video_info['Video Info']['overview'],
           pre_string + video_info['Video Info']['poster_path'],
           video_info['Video Info']['release_date'],
