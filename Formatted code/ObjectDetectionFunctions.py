@@ -22,6 +22,9 @@ def detect_objects(input_detector, video_data, fileName, logProgress=True):
 
     frames_per_second = int(video_streams.get(cv2.CAP_PROP_FPS))
     print('frames_per_second = ', frames_per_second)
+    frame_count = int(video_streams.get(cv2.CAP_PROP_FRAME_COUNT))
+    width = video_streams.get(cv2.CAP_PROP_FRAME_WIDTH)
+    height = video_streams.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
     # start: object detection
     start_time = time.time()
@@ -36,4 +39,4 @@ def detect_objects(input_detector, video_data, fileName, logProgress=True):
     elapsed_time = end_time - start_time
     print('Elapsed time = ',elapsed_time)
 
-    return video_path, elapsed_time
+    return video_path, elapsed_time,frames_per_second,frame_count,width,height

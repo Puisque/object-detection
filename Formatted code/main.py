@@ -11,8 +11,12 @@ gc.collect()
 from MovieAPIFunctions import *
 from ObjectDetectionFunctions import *
 from InfoProcessingFunctions import *
+from NatureSceneDetection import *
+
 import Global
 
+COMPARE_RATE = 0.5
+PER_SEC_FRAME_DENO = 10
 print("Main!");
 
 """
@@ -30,13 +34,16 @@ dataset_1 = read_dataset_csv(fileName,header);
 print(dataset_1.shape)
 
 #For test: use the first 200 videos
-test_list = dataset_1.sample(n = 200).to_dict('index')
+# test_list = dataset_1.sample(n = 2000).to_dict('index')
+test_list = dataset_1.iloc[[17715]].to_dict('index')
+print(test_list)
 test_trailer_list = get_youtube_data(test_list,genres)
+
 
 """
 Get video data from TMDB dataset including VideoCapture results
 """
-num_videos=6 #the number of videos you want to process this time
+num_videos= 1 #the number of videos you want to process this time #changed already
 length = 100 #max length , sec
 movie_raw_data = get_video_data(num_videos,length,genres,test_trailer_list)
 print('Found {} Videos'.format(len(movie_raw_data)))
@@ -70,14 +77,43 @@ for i, (key, value) in enumerate(movie_raw_data.items()):
     f_name = eachVideo[0].replace(' ', '').replace('-','_')
     logProgress=False
     print('Processing Video: ',f_name)
-    video_path_1,elapsed_time_1  = detect_objects(detector,video_data = video_data,fileName = f_name,logProgress=logProgress)
+    video_path_out, elapsed_time,frames_per_second,frame_count,width,height  = detect_objects(detector,video_data = video_data,fileName = f_name,logProgress=logProgress)
     #Process the detection results
     output_Collection_temp = Global.output_Collection.copy()
     #====================Aisling, here is your part====================
-    per_sec_object_info = choose_obj(output_Collection_temp)
-    grouped_per_sec_object_info = final_result(per_sec_object_info)
+    # debugging process start
+    print("Here started the information processing processes.")
+    # per_sec_object_info = choose_obj(output_Collection_temp)
+    output_dic_reformated, reformat_frame_second = reformat_ouput(output_Collection_temp)
+    """
+    NS Detection
+    """
+    video_dimension = width * height
+    compare_rate = COMPARE_RATE
+    video_duration = output_Collection_temp[-1][0]
+    final_list = get_sec_potential_ns(video_dimension, compare_rate, output_dic_reformated,frame_count,frames_per_second,video_duration)
+    print("final_list = ",final_list)
+    per_video_info = {}
+    per_video_info['frames_per_second'] = frames_per_second
+    per_video_info['video_duration'] = video_duration
+    per_video_info['video_streams'] = cv2.VideoCapture(video_data.url)
+    all_sec_list = NS_detection(PER_SEC_FRAME_DENO, per_video_info, final_list)
+    print("NS Detection Result: ",all_sec_list)
+    result_map = process_ns_results(all_sec_list, per_video_info['video_duration'])
+    quality_score_result, detection_result = ns_result_format(result_map)
+    print(quality_score_result)
+    print(detection_result)
+
+    # processed_array = object_occurrence_within_second_frame(output_dic_reformated)
+    # final_dic_output = final_intent_reformat(processed_array)
+    # updated_arry = final_intent_reformat_update(processed_array)
+    # update_arr = quality_score_attempt_version2(updated_arry)
+
+    #grouped_per_sec_object_info = final_result(per_sec_object_info)
+    print("Ready to put organized info in json files.")
+    # print(update_arr)
     #============================================================
-    v_index = str(i)
-    dict_to_schema(grouped_per_sec_object_info,value,url,v_index)
+    #v_index = str(i)
+    #dict_to_schema(grouped_per_sec_object_info,value,url,v_index)
 
 gc.collect()

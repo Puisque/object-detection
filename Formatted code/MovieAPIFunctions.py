@@ -35,6 +35,7 @@ def get_youtube_data(video_data,genres):
         for video in resp.json()['results']:
           if video['site'] == 'YouTube' and (video['type'] in {'Teaser', 'Trailer'}) and video['key'] != '':
             youtube_results.append([video['name'], url_base + video['key']])
+            break; #add break here because we only want on video for one movie now
         if len(youtube_results) > 0:
           temp = {}
           temp['Youtube Info'] = youtube_results
@@ -50,6 +51,43 @@ def get_youtube_data(video_data,genres):
 
   return trailers
 
+# def get_youtube_data_harcode(video_data,hard_id):
+#   print('get_youtube_data_harcode')
+#
+#
+#   trailers = {}
+#   url_base = 'https://www.youtube.com/watch?v='
+#   for i, (key, value) in enumerate(video_data.items()):
+#     print(value['id'])
+#     if value['id'] != hard_id:
+#       continue
+#
+#     try:
+#       url = TMDB_VIDEO_URL.format(value['id'], TMDB_API_KEY)
+#       resp = requests.get(url)
+#       if resp.status_code != 200:
+#         print('Error: Failed to retrieve video for TMDb ID {} with status code: {}' \
+#               .format(value['id'], resp.status_code))
+#         trailers.append([])
+#       else:
+#         youtube_results = []  # a list of ids
+#         for video in resp.json()['results']:
+#           if video['site'] == 'YouTube' and (video['type'] in {'Teaser', 'Trailer'}) and video['key'] != '':
+#             youtube_results.append([video['name'], url_base + video['key']])
+#             print("Find the harcoded movie: ",url_base + video['key'])
+#             break
+#         if len(youtube_results) > 0:
+#           temp = {}
+#           temp['Youtube Info'] = youtube_results
+#           temp['Video Info'] = value
+#           trailers[value['id']] = temp
+#
+#         break
+#     except:
+#       print('Send Request Failed')
+#
+#   return trailers
+#
 
 """
 Filters
@@ -79,6 +117,8 @@ def length_filter(video_streams,length):
 Use Pafy & Youtube ID to get youtube video 
 """
 def get_video_data(num_videos, length, genres, video_list):
+  print('get_video_data , ',num_videos)
+
   return_video_list = {}
   n = 0
   for i, (key, value) in enumerate(video_list.items()):
@@ -118,8 +158,8 @@ def get_video_data(num_videos, length, genres, video_list):
       return_video_list[key]['Youtube Info'] = streams.copy()
 
     if len(return_video_list) >= num_videos:
-      print('Found {} movies'.format(num_videos))
-      break;get_video_data
+      print('Found -- {} movies'.format(num_videos))
+      break;
 
   return return_video_list
 
