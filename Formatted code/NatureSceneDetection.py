@@ -1,6 +1,4 @@
 import numpy as np
-import os
-import time
 import cv2
 import math
 
@@ -12,6 +10,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models
 
+"""
+Models or pre-saved data that will be used later
+"""
 alexnet = torchvision.models.alexnet(pretrained=True)
 
 model_buildings = pickle.load(open('./NS model data/IsolationForest_buildings.h5', 'rb'))
@@ -31,7 +32,9 @@ base_llist_street = torch.load('./NS model data/base_list_street.pt')
 model_list = [model_buildings,model_forest,model_glacier,model_mountain,model_sea,model_street]
 base_list_list = [base_llist_buildings,base_llist_forest,base_llist_glacier,base_llist_mountain,base_llist_sea,base_llist_street]
 
-
+"""
+NS CNN
+"""
 class CNN_AlexNet(nn.Module):
 
     def __init__(self):
@@ -52,26 +55,27 @@ class CNN_AlexNet(nn.Module):
         x = self.fc2(x)
         return x
 
-# device = torch.device("cpu")
 
 model_final = CNN_AlexNet()
 load_path = './NS model data/model_CNN_AlexNet_bs32_lr0.001_epoch5_other.pt'
-model_final.load_state_dict(torch.load(load_path,map_location='cpu'))
+model_final.load_state_dict(torch.load(load_path,map_location='cpu')) #note: can change this to gpu if you have a cuda enabled gpu
+
+class_list = ['buildings','forest','glacier','mountain','sea','street']
+train_class = ['buildings', 'forest', 'glacier', 'mountain', 'others', 'sea', 'street']
 
 """
 Info Processing: Processe output from the reformat_ouput function, find secs with potential
 """
+#Recover the [None] case for object detection - Frame
 def fill_up_empty_spaces(start_frame_id, end_frame_id,input_map):
-  # print("Fill up frames, ",start_frame_id, end_frame_id)
   i = start_frame_id
   while i<=end_frame_id:
-    # print("Filling ",i)
     input_map[i] = {'biggest_area':0,'potential': True}
     i+=1;
   return input_map
 
+#Recover the [None] case for object detection - Sec
 def fill_up_empty_sec (start_sec, end_sec,input_map):
-  # print("Fill up secs , ",start_sec, end_sec)
   i = start_sec
   while i<=end_sec:
     input_map[i] = {}
@@ -85,12 +89,11 @@ def cal_potential (in_area,video_dimension,compare_rate):
    return ns_potential
 
 
-def get_final_potential_list(detail_dict, frame_count, frames_per_second,video_duration):
+#Find which secs have potential (i.e. can be uased for ns detection)
+def get_final_potential_list(detail_dict, frames_per_second,video_duration):
     # Distill info for each sec
-    # video_duration = math.floor(frame_count / frames_per_second)
     sec_potential_list = []
     for sec, data in detail_dict.items():
-        # print("Sec = ",sec)
         if ('frames' in data.keys()):
             frames = data['frames']
             len_detected = len(frames.keys())
@@ -102,7 +105,6 @@ def get_final_potential_list(detail_dict, frame_count, frames_per_second,video_d
         else:
             potential_count = frames_per_second
 
-        # print("potential_count =  ",potential_count)
         final_potential = False;
         if potential_count == frames_per_second:
             final_potential = True
@@ -115,7 +117,7 @@ def get_final_potential_list(detail_dict, frame_count, frames_per_second,video_d
     return sec_potential_list
 
 
-def get_sec_potential_ns(video_dimension, compare_rate, in_collection,frame_count, frames_per_second,video_duration):
+def get_sec_potential_ns(video_dimension, compare_rate, in_collection, frames_per_second,video_duration):
     format_area_frame = {}
 
     for eachFrame in in_collection:
@@ -127,7 +129,6 @@ def get_sec_potential_ns(video_dimension, compare_rate, in_collection,frame_coun
         else:
             last_sec = max(temp_secs)
         if (sec != last_sec + 1) and (sec not in temp_secs):
-            # print("Fill up sec = ", last_sec, sec)
             format_area_frame = fill_up_empty_sec(last_sec, sec - 1, format_area_frame)
 
         # New second
@@ -137,7 +138,6 @@ def get_sec_potential_ns(video_dimension, compare_rate, in_collection,frame_coun
 
         if 'frames' not in format_area_frame[sec].keys():
             # first time, new frame
-            # print("New Frame ", eachFrame['frame']);
             ns_potential = cal_potential(eachFrame['area'],video_dimension, compare_rate)
             if eachFrame['frame'] != 0:
                 # fill up empty frames: beginning
@@ -155,17 +155,14 @@ def get_sec_potential_ns(video_dimension, compare_rate, in_collection,frame_coun
             last_frame = max(temp_keys)
             # if frame alraedy exists (case: multi objects per frame)
             if eachFrame['frame'] == last_frame:
-                # print('Frame Already Exist')
                 prev_biggest = format_area_frame[sec]['frames'][last_frame]['biggest_area']
                 now_biggest = max(prev_biggest, eachFrame['area'])
                 new_potential = cal_potential(now_biggest,video_dimension, compare_rate)
-                # print([prev_biggest, now_biggest])
                 format_area_frame[sec]['frames'][last_frame]['biggest_area'] = now_biggest
                 format_area_frame[sec]['frames'][last_frame]['potential'] = new_potential
 
             # fill up empty frames
             elif eachFrame['frame'] != last_frame + 1:
-                # print("Noot Connected, ", eachFrame['frame'], last_frame)
                 format_area_frame[sec]['frames'] = fill_up_empty_spaces(last_frame + 1, eachFrame['frame'] - 1,
                                                                         format_area_frame[sec]['frames'])
             else:
@@ -174,16 +171,14 @@ def get_sec_potential_ns(video_dimension, compare_rate, in_collection,frame_coun
                 format_area_frame[sec]['frames'][eachFrame['frame']] = {'biggest_area': eachFrame['area'],
                                                                         'potential': ns_potential}
 
-    final_list = get_final_potential_list(format_area_frame, frame_count, frames_per_second,video_duration)
+    final_list = get_final_potential_list(format_area_frame, frames_per_second,video_duration)
 
     return final_list
+
 
 """
 Core part of Nature Scene detection algorithm
 """
-
-class_list = ['buildings','forest','glacier','mountain','sea','street']
-train_class = ['buildings', 'forest', 'glacier', 'mountain', 'others', 'sea', 'street']
 
 
 def quantify_image(image,bins=(3, 3, 3)):
@@ -251,14 +246,11 @@ def NS_detection(num_ns_sec, per_video_info, potential_list):
     video_duration = per_video_info['video_duration']
     video_streams = per_video_info['video_streams']
 
-    # video_duration = frame_count / frames_per_second
-
     while (1):
         ret, current_frame = video_streams.read()
         if ret == True:
             skip = False
             if (potential_list[curretn_sec] == False):  # skip this second
-                # print("Skip sec {}, frame{}".format(curretn_sec, processed_frame))
                 skip = True
 
             if (skip == False):
@@ -269,55 +261,42 @@ def NS_detection(num_ns_sec, per_video_info, potential_list):
                     temp = cv2.resize(current_frame, (224, 224))
                     # cv2.imshow(temp)
 
+                # Run novelty detection models
                 match_index_list = novelty_detection(current_frame)
-                # print('Novelty Detection Result:',match_index_list)
                 max_ano, class_index = get_most_possible_cat(match_index_list)
                 if max_ano != -1 and class_index != -1:
-                    # print("Found! class_index = ",class_list[class_index])
                     per_sec_list.append(class_index)
 
             n += 1
             processed_frame += 1
             if (processed_frame == frames_per_second):  # A sec end
                 print("One Sec End, Result ======= ", per_sec_list)
+                print("Sec: ",curretn_sec)
                 curretn_sec += 1;
                 if len(per_sec_list) > 0 and skip == False:  # detected something
                     most_possible_nov = most_frequent(per_sec_list)
                     print("Most possible nov = ", class_list[most_possible_nov])
 
                     # Run ns model
-                    print("Start NS MODEL-------------------------")
+                    print("Start Nature Scene Detection MODEL-------------------------")
                     per_frame_ns_result = []
-
-
-
                     average_confidence = 0
                     print('Len of frame to Process:', len(frame_record_list))
-
-
-
-
 
                     for eachFrame in frame_record_list:
                         frame_resized = cv2.resize(eachFrame, (224, 224))
                         # cv2_imshow(frame_resized)
-                        # # print(frame_resized.shape)
                         frame_resized = torch.from_numpy(frame_resized)
                         batch_frame = np.transpose(torch.unsqueeze(frame_resized, 0), [0, 3, 1, 2])
                         batch_frame = batch_frame.float()
+
                         # prediction reuslt & confidence
                         frame_features = alexnet.features(batch_frame)
                         pred = model_final(frame_features)
                         prob = F.softmax(pred, dim=1)
                         confidence, pred_class = prob.topk(1, dim=1)
-                        top_prob, top_label = prob.topk(2)
-
-
-
+                        # top_prob, top_label = prob.topk(2)
                         average_confidence = average_confidence + confidence.item()
-
-
-
                         print('Confidence = {}%'.format(confidence.item() * 100))
                         print('Prediction = ', pred_class.item())
 
@@ -328,20 +307,13 @@ def NS_detection(num_ns_sec, per_video_info, potential_list):
                             per_frame_ns_result.append(pred_class.item())
 
                     average_confidence = average_confidence / len(frame_record_list)
-
                     most_possible_ns = most_frequent(per_frame_ns_result)
                     print("Most possible ns = ", train_class[most_possible_ns])
-
-
-
 
                     if most_possible_ns == -1:  # corner case: all sec confidence <-1
                         all_sec_list.append([class_list[most_possible_nov], [-1, average_confidence]]);
                     else:
                         all_sec_list.append([class_list[most_possible_nov], [train_class[most_possible_ns], average_confidence]]);
-
-
-
 
                     if most_possible_ns != -1:
                         if (class_list[most_possible_nov] != train_class[most_possible_ns]):
@@ -355,8 +327,6 @@ def NS_detection(num_ns_sec, per_video_info, potential_list):
                 processed_frame = 0
                 frame_record_list = []
 
-            # print("curretn_sec = ", curretn_sec)
-            # if (n == frame_count or curretn_sec == math.floor(video_duration)):
             if (curretn_sec == video_duration):
                 break;
         else:
@@ -366,17 +336,12 @@ def NS_detection(num_ns_sec, per_video_info, potential_list):
     return all_sec_list
 
 
-# For each sec:
-# case 1: estimator and CNN has same result: quality score = 1 * average confidence of cnn
-# case 2: estimator and CNN has different result: estimator weight = 0.5, CNN weight = 0.5, quality score = 0.5 * average confidence of cnn
+# Use segment length, NS model's confidence and [estimator result,  NS model result] to calculate quality score
 def process_ns_results(ns_all_sec_list, video_duration):
     result = {}  # {sec: [cnn result (category), quality score]}
     for index, eachSec in enumerate(ns_all_sec_list):
-        quality_score = 0
         estimator_result = eachSec[0]
         cnn_result = eachSec[1]
-        # print(estimator_result)
-        # print(cnn_result)
         if estimator_result != None and cnn_result != None:
             if estimator_result == cnn_result[0]:
                 quality_score = 1 * cnn_result[1]  # cnn_result[1]: average confidence
@@ -394,10 +359,7 @@ def process_ns_results(ns_all_sec_list, video_duration):
         if data[0] not in result_map.keys():  # the category does not exist in map
             result_map[data[0]] = {'timestamps': [[sec, sec]], 'quality_score': 1 * data[1], 'total_length': 1}
         else:
-            time_list = result_map[data[0]]['timestamps']
-            # total_time_length = 0
-            # for each in time_list:
-            #   total_time_length = total_time_length + (each[1]-each[0])
+            # time_list = result_map[data[0]]['timestamps']
 
             time_last = result_map[data[0]]['timestamps'][-1]
             temp = result_map[data[0]]['quality_score'] / result_map[data[0]]['total_length'] + data[1]
