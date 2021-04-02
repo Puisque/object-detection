@@ -206,9 +206,9 @@ def get_most_possible_cat(nov_detect_result):
         max_ano = each[1]
         class_index = i
 
-  if max_ano<-0.003:
-    max_ano = -1
-    class_index = -1
+  # if max_ano<-0.003:
+  #   max_ano = -1
+  #   class_index = -1
 
   return max_ano,class_index
 
@@ -322,7 +322,7 @@ def NS_detection(num_ns_sec, per_video_info, potential_list):
                     print("Detected Nothing")
                     all_sec_list.append([None, None])
                 # change sec
-                print("Len = ", len(per_sec_list))
+                # print("Len = ", len(per_sec_list))
                 per_sec_list = []
                 processed_frame = 0
                 frame_record_list = []

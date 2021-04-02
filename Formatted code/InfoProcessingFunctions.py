@@ -44,7 +44,7 @@ def reformat_ouput(output_info_collection):
 
     for i in range(len(output_info_collection)):  # i number of seconds in total
         # print("^^^^^^^^^^^^^^^start^^^^^^^^^^^^^^^^^^")
-        print("second number is: ", output_info_collection[i][0])
+        # print("second number is: ", output_info_collection[i][0])
 
         for j in range(len(output_info_collection[i][1])):  # number of frames
             #
@@ -403,7 +403,7 @@ Save Result to json file
 """
 def dict_to_schema (score_arr,video_info,url,v_index,ns_quality_score_result, ns_detection_result):
     title = video_info['Video Info']['title']
-    js_fileName = 'video '+v_index+'.json'
+    js_fileName = title+'.json'
     anno_list = []
     timeSeg=[]
 
@@ -432,16 +432,11 @@ def dict_to_schema (score_arr,video_info,url,v_index,ns_quality_score_result, ns
             timeSeg.append(time_dict)
 
     pre_string = "https://image.tmdb.org/t/p/original"
-    #Bug, cannot use extend, or the result is None
-    # anno_list = anno_list.extend(ns_quality_score_result)
-    # timeSeg = timeSeg.extend(ns_detection_result)
 
     print(anno_list)
     print(timeSeg)
     df = pd.DataFrame(
         [[title,
-          #video_info['Video Info']['id'],
-          #url,
           video_info['Video Info']['runtime'],
           video_info['Video Info']['genres'],
           video_info['Video Info']['overview'],
@@ -454,7 +449,7 @@ def dict_to_schema (score_arr,video_info,url,v_index,ns_quality_score_result, ns
           ns_detection_result,
           ]],
         index= [js_fileName],
-        columns = ['title','runtime','genres','overview','posterUrl','releaseDate','url','annotations','segments','ns_quality_score_result','ns_detection_result']
+        columns = ['title','runtime','genres','overview','posterUrl','releaseDate','trailerUrl','annotations','segments','ns_quality_score_result','ns_detection_result']
     )
 
     df_json = df.to_json(orient="index",indent = 4).replace('\/', "/")

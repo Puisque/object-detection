@@ -14,13 +14,13 @@ print("Main!");
 const variables 
 """
 # fileName = 'tmdb_movies_metadata.csv' # can be found in the Code -> TMDB folder
-# fileName = 'tmdb_movies_metadata_after2010.csv'
+fileName = 'tmdb_movies_metadata_after2010.csv'
 # fileName = 'tmdb_movies_metadata_after2010_docum.csv'
-fileName = 'tmdb_movies_metadata_after2010_Sea.csv'
+# fileName = 'tmdb_movies_metadata_after2010_Mountain.csv'
 
 header = ['genres','id','overview', 'poster_path','release_date', 'runtime', 'title',]#7 columns
 genres = ['Comedy','Romance','Family','Drama','Documentary'] #for test&demo: use video in Romance, Family,Drama,Comedy, Documentary
-COMPARE_RATE = 0.5
+COMPARE_RATE = 0.4
 PER_SEC_FRAME_DENO = 10
 
 """
@@ -31,7 +31,7 @@ dataset_1 = read_dataset_csv(fileName,header);
 print(dataset_1.shape)
 
 #For test: use the first 200 videos
-test_list = dataset_1.sample(n = 10,random_state =2).to_dict('index')
+test_list = dataset_1.sample(n = 100,random_state =3).to_dict('index')
 test_trailer_list = get_youtube_data(test_list,genres)
 
 #For NS: use hardcoded id
@@ -42,7 +42,7 @@ test_trailer_list = get_youtube_data(test_list,genres)
 """
 Get video data from TMDB dataset including VideoCapture results
 """
-num_videos=1 #the number of videos you want to process this time #changed already
+num_videos=10 #the number of videos you want to process this time #changed already
 length = 120 #max length , sec
 movie_raw_data = get_video_data(num_videos,length,genres,test_trailer_list)
 print('Found {} Videos'.format(len(movie_raw_data)))
