@@ -367,7 +367,7 @@ def final_quaility_score(area_score_dic, acc_score_dic, update_arr):
         area_score.append(j['score'])
     final_score_arr = []
     for i in range(len(update_arr)):
-        final_score = area_score[i] * 0.2 / 100 + acc_score[i] * 0.5 / 100 + len_score[i] * 0.3 / 100
+        final_score = area_score[i] * 0.2 / 100 + acc_score[i] * 0.6 / 100 + len_score[i] * 0.2 / 100
         update_final_score = round(final_score, 1)  # only 1 digit after "."
         final_score_arr.append(final_score)
 
