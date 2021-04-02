@@ -1,0 +1,48 @@
+{
+    "video_Blind Detective.json":{
+        "title":"Blind Detective",
+        "runtime":130.0,
+        "genres":["Crime","Comedy","Drama"],
+        "overview":"A cop is forced into early retirement due to retinal damage. But after witnessing a bank robbery along with a female inspector - who believes he has acute senses - they team up in hope to solve the case.",
+        "posterUrl":"https://image.tmdb.org/t/p/original/srz3mVjrt5eZUnvJL6wxAxQVT90.jpg",
+        "releaseDate":"2013-07-04",
+        "trailerUrl":"https://www.youtube.com/watch?v=6HUMQfvwYvE",
+        "annotations":[
+            {
+                "keyword":"kite",
+                "score":127.3
+            },
+            {
+                "keyword":"person",
+                "score":538.4
+            }
+        ],
+        "segments":[
+            {
+                "keyword":"kite",
+                "start":2,
+                "end":2
+            },
+            {
+                "keyword":"person",
+                "start":6,
+                "end":7
+            },
+            {
+                "keyword":"person",
+                "start":11,
+                "end":17
+            },
+            {
+                "keyword":"person",
+                "start":22,
+                "end":41
+            },
+            {
+                "keyword":"person",
+                "start":44,
+                "end":46
+            }
+        ]
+    }
+}
