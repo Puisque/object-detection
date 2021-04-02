@@ -1,0 +1,33 @@
+{
+    "video_Love at the Thanksgiving Day Parade.json":{
+        "title":"Love at the Thanksgiving Day Parade",
+        "runtime":97.0,
+        "genres":["Romance","TV Movie"],
+        "overview":"As Chicago gears up for its annual Thanksgiving Day parade, Emily Jones, an eager parade coordinator is shocked when Henry Williams, a wealthy new development consultant, is brought in to analyze the parade's finances.",
+        "posterUrl":"https://image.tmdb.org/t/p/original/sRHz4wLQ9DgCOnWrWfVvKvaXrzd.jpg",
+        "releaseDate":"2012-11-04",
+        "trailerUrl":"https://www.youtube.com/watch?v=TAyY_mghtlQ",
+        "annotations":[
+            {
+                "keyword":"person",
+                "score":714.2
+            },
+            {
+                "keyword":"horse",
+                "score":484.8
+            }
+        ],
+        "segments":[
+            {
+                "keyword":"person",
+                "start":2,
+                "end":25
+            },
+            {
+                "keyword":"horse",
+                "start":14,
+                "end":14
+            }
+        ]
+    }
+}
