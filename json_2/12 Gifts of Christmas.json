@@ -1,0 +1,33 @@
+{
+    "12 Gifts of Christmas.json":{
+        "title":"12 Gifts of Christmas",
+        "runtime":84.0,
+        "genres":["Family","TV Movie"],
+        "overview":"When Anna Parisi, an unemployed fine arts painter, is unable to make ends meet, she is hired to become a personal Christmas shopper for Marc, an uptight corporate exec.  As they begin working together, Marc learns that Christmas giving has less to do with the amount of money spent and more to do with the importance of the gift, while Anna discovers she might find success as an artist in a way she never expected.  The best gift of all of course is the love they discover with one another.",
+        "posterUrl":"https://image.tmdb.org/t/p/original/bea71zlb1o01qeKjyY5w8h0lepX.jpg",
+        "releaseDate":"2015-11-26",
+        "trailerUrl":"https://www.youtube.com/watch?v=TLwh4vgAyy8",
+        "annotations":[
+            {
+                "keyword":"stop sign",
+                "score":193.1
+            },
+            {
+                "keyword":"person",
+                "score":713.2
+            }
+        ],
+        "segments":[
+            {
+                "keyword":"stop sign",
+                "start":0,
+                "end":5
+            },
+            {
+                "keyword":"person",
+                "start":10,
+                "end":26
+            }
+        ]
+    }
+}
