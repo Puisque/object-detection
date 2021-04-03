@@ -11,10 +11,6 @@
             {
                 "keyword":"person",
                 "score":343.5
-            },
-            {
-                "keyword":"forest",
-                "score":0.5
             }
         ],
         "segments":[
@@ -27,11 +23,6 @@
                 "keyword":"person",
                 "start":24,
                 "end":83
-            },
-            {
-                "keyword":"forest",
-                "start":11,
-                "end":11
             }
         ]
     }
