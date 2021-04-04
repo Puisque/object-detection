@@ -1,0 +1,62 @@
+{
+    "One Life.json":{
+        "title":"One Life",
+        "runtime":75,
+        "genres":["Documentary","Family"],
+        "overview":"One Life captures unprecedented and beautiful sequences of animal behaviour guaranteed to bring you closer to nature than ever before, as well as a second disc packed full of never before seen extras including an exclusive making of featurette narrated by Daniel Craig.",
+        "posterUrl":"https://www.themoviedb.org/t/p/w1280/zorlrbxahQjtIy6rHovTBTK8FcC.jpg",
+        "releaseDate":"2013-02-01",
+        "trailerUrl":"https://www.youtube.com/watch?v=9Y4jnNU0Azs",
+        "annotations":[
+            {
+                "keyword":"bird",
+                "score":883.4
+            },
+            {
+                "keyword":"elephant",
+                "score":812.3
+            },
+            {
+                "keyword":"mountain",
+                "score":2.5
+            }
+        ],
+        "segments":[
+            {
+                "keyword":"bird",
+                "start":39,
+                "end":40
+            },
+            {
+                "keyword":"bird",
+                "start":43,
+                "end":44
+            },
+            {
+                "keyword":"bird",
+                "start":97,
+                "end":98
+            },
+            {
+                "keyword":"elephant",
+                "start":46,
+                "end":49
+            },
+            {
+                "keyword":"elephant",
+                "start":82,
+                "end":84
+            },
+            {
+                "keyword":"elephant",
+                "start":102,
+                "end":103
+            },
+            {
+                "keyword":"mountain",
+                "start":77,
+                "end":78
+            }
+        ]
+    }
+}
