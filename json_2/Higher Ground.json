@@ -1,0 +1,42 @@
+{
+    "Higher Ground.json":{
+        "title":"Higher Ground",
+        "runtime":109.0,
+        "genres":["Drama","Thriller"],
+        "overview":"A chronicle of one woman's lifelong struggle with her faith.",
+        "posterUrl":"https://image.tmdb.org/t/p/original/Agm1Z0QZAnV1nSBedlorGmRtuj4.jpg",
+        "releaseDate":"2011-08-26",
+        "trailerUrl":"https://www.youtube.com/watch?v=vh93pheDAns",
+        "annotations":[
+            {
+                "keyword":"chair",
+                "score":155.2
+            },
+            {
+                "keyword":"person",
+                "score":1003.4
+            },
+            {
+                "keyword":"book",
+                "score":1145.1
+            }
+        ],
+        "segments":[
+            {
+                "keyword":"chair",
+                "start":4,
+                "end":6
+            },
+            {
+                "keyword":"person",
+                "start":6,
+                "end":40
+            },
+            {
+                "keyword":"book",
+                "start":7,
+                "end":8
+            }
+        ]
+    }
+}

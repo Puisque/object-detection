@@ -1,0 +1,67 @@
+{
+    "video_The Dog.json":{
+        "title":"The Dog",
+        "runtime":100.0,
+        "genres":["Documentary"],
+        "overview":"In 1972, John Wojtowicz attempted to rob a Brooklyn bank to pay for his lover\u2019s sex-change operation. The story was the basis for the film Dog Day Afternoon. The Dog captures John, who shares his story for the first time in his own unique, offensive, hilarious and heartbreaking way.",
+        "posterUrl":"https://image.tmdb.org/t/p/original/tJ4RPPASWzJmngBoQthshYkL3Fk.jpg",
+        "releaseDate":"2013-09-07",
+        "trailerUrl":"https://www.youtube.com/watch?v=9hFg-_SESpo",
+        "annotations":[
+            {
+                "keyword":"person",
+                "score":1136.3
+            },
+            {
+                "keyword":"clock",
+                "score":1353.1
+            },
+            {
+                "keyword":"buildings",
+                "score":0.5
+            }
+        ],
+        "segments":[
+            {
+                "keyword":"person",
+                "start":2,
+                "end":26
+            },
+            {
+                "keyword":"person",
+                "start":28,
+                "end":33
+            },
+            {
+                "keyword":"person",
+                "start":35,
+                "end":40
+            },
+            {
+                "keyword":"person",
+                "start":42,
+                "end":53
+            },
+            {
+                "keyword":"person",
+                "start":55,
+                "end":61
+            },
+            {
+                "keyword":"person",
+                "start":64,
+                "end":68
+            },
+            {
+                "keyword":"clock",
+                "start":63,
+                "end":63
+            },
+            {
+                "keyword":"buildings",
+                "start":53,
+                "end":53
+            }
+        ]
+    }
+}

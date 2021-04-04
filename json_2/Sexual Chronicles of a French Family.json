@@ -1,0 +1,29 @@
+{
+    "Sexual Chronicles of a French Family.json":{
+        "title":"Sexual Chronicles of a French Family",
+        "runtime":81.0,
+        "genres":["Comedy","Drama"],
+        "overview":"Three generations of a French family open up about their sexual experiences and desires after young Romain is caught masturbating in his biology class.",
+        "posterUrl":"https://image.tmdb.org/t/p/original/pU2nD3Llaz3Taq5FAaQUg00uJYD.jpg",
+        "releaseDate":"2012-05-09",
+        "trailerUrl":"https://www.youtube.com/watch?v=uZq9OfchXEE",
+        "annotations":[
+            {
+                "keyword":"person",
+                "score":343.5
+            }
+        ],
+        "segments":[
+            {
+                "keyword":"person",
+                "start":3,
+                "end":21
+            },
+            {
+                "keyword":"person",
+                "start":24,
+                "end":83
+            }
+        ]
+    }
+}

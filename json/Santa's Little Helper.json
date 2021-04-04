@@ -1,0 +1,24 @@
+{
+    "video_Santa's Little Helper.json":{
+        "title":"Santa's Little Helper",
+        "runtime":91.0,
+        "genres":["Comedy","Family"],
+        "overview":"After getting fired from his job, a slick, fast-talking businessman is thrown into an elf competition to become Santa\u00b9s next second-in-command. Put through a series of rigorous training exercises to prepare for the contest, The Miz and another aspiring elf go head-to-head in the hopes of becoming Santa\u00b9s Little Helper.",
+        "posterUrl":"https://image.tmdb.org/t/p/original/gsJU1uwqMB3jCWx7260WTYtSp5k.jpg",
+        "releaseDate":"2015-11-17",
+        "trailerUrl":"https://www.youtube.com/watch?v=t57M5v0wZVw",
+        "annotations":[
+            {
+                "keyword":"person",
+                "score":760.7
+            }
+        ],
+        "segments":[
+            {
+                "keyword":"person",
+                "start":1,
+                "end":11
+            }
+        ]
+    }
+}

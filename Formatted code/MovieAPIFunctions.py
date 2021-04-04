@@ -35,6 +35,7 @@ def get_youtube_data(video_data,genres):
         for video in resp.json()['results']:
           if video['site'] == 'YouTube' and (video['type'] in {'Teaser', 'Trailer'}) and video['key'] != '':
             youtube_results.append([video['name'], url_base + video['key']])
+            break; #add break here because we only want on video for one movie now
         if len(youtube_results) > 0:
           temp = {}
           temp['Youtube Info'] = youtube_results
@@ -57,7 +58,8 @@ Filters
 def genres_filter(data,genres):
   genres_list = ast.literal_eval(data['Video Info']['genres'])
   found = False
-  unexpected_list = ['Animation','Fantasy','Science Fiction']
+  # unexpected_list = ['Animation','Fantasy','Science Fiction']
+  unexpected_list = ['Animation']
   for each in genres_list:
     if each['name']  in unexpected_list:
       print('Found Unexpected Genre')
@@ -79,6 +81,8 @@ def length_filter(video_streams,length):
 Use Pafy & Youtube ID to get youtube video 
 """
 def get_video_data(num_videos, length, genres, video_list):
+  print('get_video_data , ',num_videos)
+
   return_video_list = {}
   n = 0
   for i, (key, value) in enumerate(video_list.items()):
@@ -119,7 +123,7 @@ def get_video_data(num_videos, length, genres, video_list):
 
     if len(return_video_list) >= num_videos:
       print('Found {} movies'.format(num_videos))
-      break;get_video_data
+      break;
 
   return return_video_list
 
